@@ -1,0 +1,57 @@
+{
+  "template_input_params": [
+    {
+      "name": "mig_port_name",
+      "label": "Managed Instance Group Port Name",
+      "description": "Name of the port the service is listening on.",
+      "type": "string",
+      "required": true,
+      "hidden": false,
+      "secured": false
+    },
+    {
+      "name": "mig_name",
+      "label": "Managed Instance Group Name",
+      "description": "Name of the managed instance group.",
+      "type": "string",
+      "required": true,
+      "hidden": false,
+      "secured": false
+    },
+    {
+      "name": "mig_size",
+      "label": "Managed Instance Group Size",
+      "description": "Target size of the manged instance group.",
+      "type": "string",
+      "hidden": false,
+      "secured": false
+    },
+    {
+      "name": "mig_port",
+      "label": "Managed Instance Group Port",
+      "description": "Port the service is listening on.",
+      "type": "string",
+      "required": true,
+      "hidden": false,
+      "secured": false
+    }
+  ],
+  "template_output_params": [
+    {
+      "name": "Instances",
+      "label": "Managed Instance Group Instances",
+      "description": "List of instances in the Managed Instance Group.",
+      "type": "list",
+      "hidden": false,
+      "secured": false
+    },
+    {
+      "name": "Health_Check",
+      "label": "Health Check",
+      "description": "IP for health checking the Managed Instance Group.",
+      "type": "string",
+      "hidden": false,
+      "secured": false
+    }
+  ]
+}
