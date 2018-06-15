@@ -1,0 +1,622 @@
+{
+  "service": {
+    "specVersion": "v2",
+    "catalog_metadata": {
+      "name": "Service-now CMDB Add and Delete Record",
+      "description": "This service is used to deploy a WAS on a cloud with middleware software installed.It will also perform an update in CMDB.",
+      "longDescription": "This service is used to deploy a VM on a cloud with middleware software installed.\nAs per user selection application will get deployed and CMDB will get updated with server records.",
+      "providerDisplayName": "",
+      "image": "serviceicon_1.svg",
+      "category": "Application Services",
+      "bullets": [
+        {
+          "title": "IPAM Server",
+          "description": "Gat an available ip from IPAM server"
+        },
+        {
+          "title": "IBM WebSphere Network Deployment",
+          "description": "IBM WebSphere Network Deployment V9 on a single virtual machine using IPAM server output.\n\n"
+        },
+        {
+          "title": "Helm Chart for ELK deployement",
+          "description": "Helm Chart for ELK deployement"
+        },
+        {
+          "title": "ELK agent Installation",
+          "description": "ELK agent Installation on a Server to monitor logs"
+        },
+        {
+          "title": "APM Agent Installation",
+          "description": "APM Agent Installation for monitoring required for production cloud"
+        },
+        {
+          "title": "CMDB update",
+          "description": "CMDB update , update server records in Service Now CMDB."
+        }
+      ],
+      "author": "admin"
+    },
+    "tags": [],
+    "parameters": [
+      {
+        "name": "Environment",
+        "label": "Environment",
+        "customtype": "string",
+        "type": "string",
+        "immutable": false,
+        "hidden": false,
+        "required": true,
+        "secured": false,
+        "options": [
+          {
+            "value": "Development",
+            "label": "Development"
+          },
+          {
+            "value": "Test",
+            "label": "Test"
+          },
+          {
+            "value": "Production",
+            "label": "Production"
+          }
+        ]
+      },
+      {
+        "name": "Receiverlist",
+        "label": "Receiver list",
+        "customtype": "string",
+        "type": "string",
+        "immutable": false,
+        "hidden": false,
+        "required": true,
+        "secured": false,
+        "description": "Receiver list for Notification"
+      },
+      {
+        "name": "WASNode01_root_disk_size",
+        "label": "WASNode01_root_disk_size",
+        "customtype": "string",
+        "type": "string",
+        "immutable": false,
+        "hidden": false,
+        "required": true,
+        "secured": false,
+        "description": "WASNode01_root_disk_size",
+        "default": ""
+      },
+      {
+        "name": "memory",
+        "label": "Memory",
+        "customtype": "string",
+        "type": "string",
+        "immutable": false,
+        "hidden": false,
+        "required": true,
+        "secured": false,
+        "default": "6098"
+      }
+    ],
+    "flow": {
+      "conditions": [
+        {
+          "decision": {
+            "title": "Environment",
+            "options": [
+              {
+                "case": "Development",
+                "sequence": {}
+              },
+              {
+                "case": "Test",
+                "sequence": {
+                  "0": "ibmchart9892d24d",
+                  "1": "elkagentfa67ddc2"
+                }
+              },
+              {
+                "case": "Production",
+                "sequence": {
+                  "0": "ibmchart0c63150a",
+                  "1": "elkagent9267ef6e",
+                  "2": "apmconfia2e1f01b"
+                }
+              }
+            ],
+            "id": "decision2950dc33",
+            "description": "Select Environment which you want to deploy.",
+            "mapped_parameter": "${parameters.Environment}"
+          }
+        }
+      ],
+      "templates": [
+        {
+          "Infoblox Integration Template": {
+            "title": "Infoblox Integration Template",
+            "template_name": "Infoblox Integration Template",
+            "version": "2.0",
+            "id": "infoblox2ea319a8",
+            "template_type": "Terraform",
+            "template_content_type": "Integration",
+            "template_provider": "Other",
+            "instance_name": "",
+            "cloud_connection_name": "Other",
+            "template_data_objects": {},
+            "template_params": {
+              "hostname": "<server hostname>",
+              "domain": "<server domain>",
+              "infoblox_ip_address": "<infoblox server ip>",
+              "infoblox_user": "<infoblox username>",
+              "infoblox_user_password": "",
+              "network": "<infoblox network>"
+            },
+            "outputs": [
+              "assigned_ip_address",
+              "associated_domain",
+              "associated_hostname"
+            ]
+          }
+        },
+        {
+          "IBM WebSphere Network Deployment V9 on a single virtual machine": {
+            "title": "IBM WebSphere Network Deployment V9 on a single virtual machine",
+            "template_name": "IBM WebSphere Network Deployment V9 on a single virtual machine - VMware vSphere",
+            "version": "2.0",
+            "id": "ibmwebspbfc3186a",
+            "template_type": "Terraform",
+            "template_content_type": "VMware vSphere",
+            "template_provider": "VMware vSphere",
+            "instance_name": "",
+            "cloud_connection_name": "<Cloud Connection name for VMware Cloud Provider>",
+            "template_data_objects": {
+              "advanced_content_runtime_chef": "VMware"
+            },
+            "template_params": {
+              "WASNode01_dns_servers":"[<DNS server>]",
+              "WASNode01_dns_suffixes": "${templates.infoblox2ea319a8.output.associated_domain}",
+              "WASNode01_domain": "${templates.infoblox2ea319a8.output.associated_domain}",
+              "WASNode01-image": "terraform/template/UbantuDockerCE",
+              "WASNode01-os_admin_user": "<username>",
+              "WASNode01-os_password": "",
+              "user_public_ssh_key": "<ssh-key>",
+              "WASNode01_root_disk_size": "${parameters.WASNode01_root_disk_size}",
+              "WASNode01-name": "${templates.infoblox2ea319a8.output.associated_hostname}",
+              "WASNode01_root_disk_datastore": "<datastore>",
+              "WASNode01_ipv4_gateway": "<gatway ip>",
+              "WASNode01_ipv4_address": "${templates.infoblox2ea319a8.output.assigned_ip_address}",
+              "WASNode01_memory": "${parameters.memory}",
+              "WASNode01_ipv4_prefix_length": "<prefix length>",
+              "WASNode01_number_of_vcpu": "${parameters.WASNode01_number_of_vcpu}",
+              "WASNode01_network_interface_label": "<Network Name>",
+              "WASNode01_was_version": "9.0.0.6",
+              "WASNode01_was_profiles_standalone_profiles_standalone1_cell": "cell01",
+              "WASNode01_was_wsadmin_standalone_jvmproperty_property_value_maximum": "512",
+              "WASNode01_was_wsadmin_standalone_jvmproperty_property_value_initial": "256",
+              "WASNode01_was_profiles_standalone_profiles_standalone1_profile": "AppSrv01",
+              "WASNode01_was_java_version": "8.0.50.7",
+              "WASNode01_was_security_admin_user": "<username>",
+              "WASNode01_was_security_admin_user_pwd": "",
+              "WASNode01_was_profiles_standalone_profiles_standalone1_keystorepassword": "",
+              "WASNode01_was_os_users_was_name": "wasadmin",
+              "WASNode01_was_install_dir": "/opt/IBM/WebSphere/AppServer",
+              "WASNode01_was_profile_dir": "/opt/IBM/WebSphere/AppServer/profiles",
+              "WASNode01_was_os_users_was_gid": "wasgrp",
+              "WASNode01_cluster": "<cluster name>",
+              "WASNode01_datacenter": "<dataceneter>",
+              "WASNode01_folder": "<folder>",
+              "WASNode01_adapter_type": "vmxnet3",
+              "WASNode01_resource_pool": "<resource pool name>"
+            },
+            "outputs": [
+              "WASNode01_ip",
+              "WASNode01_name",
+              "WASNode01_roles",
+              "stack_id"
+            ]
+          }
+        },
+        {
+          "ibm-charts/ibm-icplogging-kibana": {
+            "title": "ibm-charts/ibm-icplogging-kibana",
+            "template_name": "ibm-icplogging-kibana",
+            "version": "0.1.0",
+            "id": "ibmchart9892d24d",
+            "template_type": "Helm",
+            "template_content_type": "IBM Cloud Private",
+            "template_provider": "IBM Cloud Private",
+            "instance_name": "",
+            "cloud_connection_name": "<cloud connection name for ICP>",
+            "template_dataobjects": {},
+            "template_params": {
+              "namespace": "default",
+              "image-pullPolicy": "IfNotPresent",
+              "kibana-replicas": 1,
+              "kibana-name": "kibana",
+              "kibana-namespace": "kube-system",
+              "kibana-internal": 5601,
+              "kibana-external": 32601,
+              "kibana-elasticsearch-url": "http://elasticsearch:9200",
+              "kibana-image-repository": "ibmcom/kibana",
+              "kibana-image-tag": "5.5.1",
+              "kibana-managementNodeOnly": "",
+              "xpack-monitoring": "",
+              "xpack-security": "",
+              "xpack-graph": "",
+              "xpack-reporting": "",
+              "xpack-ml": ""
+            },
+            "outputs": []
+          }
+        },
+        {
+          "ELK Agent Installation Template": {
+            "title": "ELK Agent Installation Template",
+            "template_name": "ELK Agent Installation Template",
+            "version": "2.0",
+            "id": "elkagentfa67ddc2",
+            "template_type": "Terraform",
+            "template_content_type": "Integration",
+            "template_provider": "Other",
+            "instance_name": "",
+            "cloud_connection_name": "Other",
+            "template_data_objects": {},
+            "template_params": {
+              "ipv4_address": "",
+              "os_admin_user": "",
+              "os_admin_password": "",
+              "os_private_ssh_key": "",
+              "logstash_server_ip": "",
+              "logstash_server_port": "",
+              "filebeat_source_url": "",
+              "filebeat_config_url": "",
+              "monitored_paths": ""
+            },
+            "outputs": []
+          }
+        },
+        {
+          "ibm-charts/ibm-icplogging-kibana": {
+            "title": "ibm-charts/ibm-icplogging-kibana",
+            "template_name": "ibm-icplogging-kibana",
+            "version": "0.1.0",
+            "id": "ibmchart0c63150a",
+            "template_type": "Helm",
+            "template_content_type": "IBM Cloud Private",
+            "template_provider": "IBM Cloud Private",
+            "instance_name": "",
+            "cloud_connection_name": "ICP",
+            "template_dataobjects": {},
+            "template_params": {
+              "namespace": "default",
+              "image-pullPolicy": "IfNotPresent",
+              "kibana-replicas": 1,
+              "kibana-name": "kibana",
+              "kibana-namespace": "kube-system",
+              "kibana-internal": 5601,
+              "kibana-external": 32601,
+              "kibana-elasticsearch-url": "http://elasticsearch:9200",
+              "kibana-image-repository": "ibmcom/kibana",
+              "kibana-image-tag": "5.5.1",
+              "kibana-managementNodeOnly": "",
+              "xpack-monitoring": "",
+              "xpack-security": "",
+              "xpack-graph": "",
+              "xpack-reporting": "",
+              "xpack-ml": ""
+            },
+            "outputs": []
+          }
+        },
+        {
+          "ELK Agent Installation Template": {
+            "title": "ELK Agent Installation Template",
+            "template_name": "ELK Agent Installation Template",
+            "version": "2.0",
+            "id": "elkagent9267ef6e",
+            "template_type": "Terraform",
+            "template_content_type": "Integration",
+            "template_provider": "Other",
+            "instance_name": "",
+            "cloud_connection_name": "Other",
+            "template_data_objects": {},
+            "template_params": {
+              "ipv4_address": "",
+              "os_admin_user": "",
+              "os_admin_password": "",
+              "os_private_ssh_key": "",
+              "logstash_server_ip": "",
+              "logstash_server_port": "",
+              "filebeat_source_url": "",
+              "filebeat_config_url": "",
+              "monitored_paths": ""
+            },
+            "outputs": []
+          }
+        },
+        {
+          "APM Configuration for WebSphere Application Server Template": {
+            "title": "APM Configuration for WebSphere Application Server Template",
+            "template_name": "APM Configuration for WebSphere Application Server Template",
+            "version": "2.0",
+            "id": "apmconfia2e1f01b",
+            "template_type": "Terraform",
+            "template_content_type": "Integration",
+            "template_provider": "Other",
+            "instance_name": "",
+            "cloud_connection_name": "Other",
+            "template_data_objects": {},
+            "template_params": {
+              "ip_address": "",
+              "user": "root",
+              "password": "",
+              "private_key": "",
+              "was_profile": "AppSrv01",
+              "was_home": "/opt/IBM/WebSphere/AppServer",
+              "was_cell": "was_cell",
+              "was_node": "node01",
+              "was_user": "wasadmin",
+              "apm_dir": "/opt/ibm/apm"
+            },
+            "outputs": []
+          }
+        },
+        {
+          "ServiceNow CMDB Configuration Template": {
+            "title": "ServiceNow CMDB Configuration Template",
+            "template_name": "ServiceNow CMDB Configuration Template",
+            "version": "2.0",
+            "id": "servicen1fc5fd51",
+            "template_type": "Terraform",
+            "template_content_type": "Integration",
+            "template_provider": "Other",
+            "instance_name": "",
+            "cloud_connection_name": "Other",
+            "template_data_objects": {},
+            "template_params": {
+              "cmdb_user": "<cmdb user name>",
+              "cmdb_pass": "<cmdb user password>",
+              "cmdb_instance": "<cmdb instance id>.",
+              "cmdb_key": "${templates.ibmwebspbfc3186a.output.WASNode01_name}",
+              "cmdb_record": {
+                "name": "${templates.ibmwebspbfc3186a.output.WASNode01_name}",
+                "description": "server description",
+                "hostname": "server1"
+              }
+            },
+            "outputs": []
+          }
+        }
+      ],
+      "resthooks": [],
+      "notifications": [
+        {
+          "emailnotification": {
+            "title": "emailnotification",
+            "type": "email",
+            "id": "emailnot74c59ea3",
+            "sender": "CAMadmin",
+            "receiverList": "${parameters.Receiverlist}",
+            "copyToList": "${parameters.Receiverlist}",
+            "subject": "${svc_instance.name} is initiated.",
+            "body": "Hi,\n\n${svc_instance.name} is initiated.\nKindly check the status of the instance.\n\nThanks\nAdmin"
+          }
+        }
+      ],
+      "sequence": {
+        "0": "infoblox2ea319a8",
+        "1": "ibmwebspbfc3186a",
+        "2": "decision2950dc33",
+        "3": "servicen1fc5fd51",
+        "4": "emailnot74c59ea3"
+      }
+    },
+    "plans": [
+      {
+        "name": "Standard",
+        "description": "To deploy a Standard plan",
+        "plan_parameters": []
+      },
+      {
+        "name": "Development",
+        "description": "In case of development \"WASNode01_root_disk_size\"\tis 250 GB.",
+        "plan_parameters": [
+          {
+            "name": "WASNode01_root_disk_size",
+            "label": "WASNode01_root_disk_size",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "WASNode01_root_disk_size",
+            "default": "250"
+          },
+          {
+            "name": "Environment",
+            "label": "Environment",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "options": [
+              {
+                "label": "Development",
+                "value": "Development",
+                "default": true
+              },
+              {
+                "label": "Test",
+                "value": "Test",
+                "default": false
+              },
+              {
+                "label": "Production",
+                "value": "Production",
+                "default": false
+              }
+            ]
+          },
+          {
+            "name": "Receiverlist",
+            "label": "Receiver list",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "Receiver list for Notification"
+          },
+          {
+            "name": "memory",
+            "label": "Memory",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "default": "6098"
+          }
+        ]
+      },
+      {
+        "name": "Test",
+        "description": "In case of Test \"WASNode01_root_disk_size\"\tis 350 GB.",
+        "plan_parameters": [
+          {
+            "name": "Environment",
+            "label": "Environment",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "options": [
+              {
+                "label": "Development",
+                "value": "Development",
+                "default": false
+              },
+              {
+                "label": "Test",
+                "value": "Test",
+                "default": true
+              },
+              {
+                "label": "Production",
+                "value": "Production",
+                "default": false
+              }
+            ]
+          },
+          {
+            "name": "WASNode01_root_disk_size",
+            "label": "WASNode01_root_disk_size",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "WASNode01_root_disk_size",
+            "default": "350"
+          },
+          {
+            "name": "Receiverlist",
+            "label": "Receiver list",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "Receiver list for Notification"
+          },
+          {
+            "name": "memory",
+            "label": "Memory",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "default": "6098"
+          }
+        ]
+      },
+      {
+        "name": "Production",
+        "description": "In case of Production \"WASNode01_root_disk_size\" is 500 GB.",
+        "plan_parameters": [
+          {
+            "name": "Environment",
+            "label": "Environment",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "options": [
+              {
+                "label": "Development",
+                "value": "Development",
+                "default": false
+              },
+              {
+                "label": "Test",
+                "value": "Test",
+                "default": false
+              },
+              {
+                "label": "Production",
+                "value": "Production",
+                "default": true
+              }
+            ]
+          },
+          {
+            "name": "WASNode01_root_disk_size",
+            "label": "WASNode01_root_disk_size",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "WASNode01_root_disk_size",
+            "default": "500"
+          },
+          {
+            "name": "Receiverlist",
+            "label": "Receiver list",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "description": "Receiver list for Notification"
+          },
+          {
+            "name": "memory",
+            "label": "Memory",
+            "customtype": "string",
+            "type": "string",
+            "immutable": false,
+            "hidden": false,
+            "required": true,
+            "secured": false,
+            "default": "6098"
+          }
+        ]
+      }
+    ]
+  }
+}

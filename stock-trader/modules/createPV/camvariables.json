@@ -1,0 +1,46 @@
+{
+  "template_input_params": [
+    {
+      "name": "pvname",
+      "description": "name of pv",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "pvname",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "pvsize",
+      "description": "size of pv",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "pvsize",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "root_password",
+      "description": "ssh root password",
+      "default": "passw0rd",
+      "type": "password",
+      "required": true,
+      "secured": true,
+      "label": "root_password",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "serverip",
+      "description": "IP of host to ssh",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "serverip",
+      "hidden": false,
+      "immutable": false
+    }
+  ],
+  "template_output_params": []
+}

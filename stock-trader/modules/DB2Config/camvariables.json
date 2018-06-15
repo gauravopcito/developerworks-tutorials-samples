@@ -1,0 +1,60 @@
+{
+  "template_input_params": [
+    {
+      "name": "db_password",
+      "description": "db password",
+      "default": "passw0rd",
+      "type": "password",
+      "required": true,
+      "secured": true,
+      "label": "db_password",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "db_user",
+      "description": "database user",
+      "default": "db2inst1",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "db_user",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "dbname",
+      "description": "database name",
+      "default": "trader",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "dbname",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "host",
+      "description": "IP of host to ssh",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "host",
+      "hidden": false,
+      "immutable": false,
+      "default": ""
+    },
+    {
+      "name": "root_password",
+      "description": "ssh root password",
+      "default": "passw0rd",
+      "type": "password",
+      "required": true,
+      "secured": true,
+      "label": "root_password",
+      "hidden": false,
+      "immutable": false
+    }
+  ],
+  "template_output_params": []
+}

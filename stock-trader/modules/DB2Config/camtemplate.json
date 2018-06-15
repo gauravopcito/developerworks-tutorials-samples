@@ -1,0 +1,99 @@
+{
+  "description": "db configuration with inputs",
+  "name": "DBConfiguration",
+  "type": "userCreated",
+  "manifest": {
+    "template_type": "Terraform",
+    "template_provider": "Other",
+    "icon": "serviceicon_1.svg",
+    "template": {
+      "templateData": "variable \"host\" {\n#  default = \"9.37.194.157”\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  default = \"passw0rd\"\n  description = \"ssh root password\"\n}\nvariable \"db_password\" {\n  default = \"passw0rd\"\n  description = \"db password\"\n}\nvariable \"dbname\" {\n  default = \"trader\"\n  description = \"database name\"\n}\nvariable \"db_user\" {\n  default = \"db2inst1\"\n  description = \"database user\"\n}\nresource \"null_resource\" \"DB_Config1\" {\n  provisioner \"remote-exec\" {\n      inline = [\n        \"DB_CONT=`kubectl get pods|grep db2 |awk '{print $1}'`\",\n        \"kubectl cp /tmp/DB2_Script_test.sh $DB_CONT:/database/config/db2inst1/DB2_Script_test.sh\",\n        \"kubectl exec -it $DB_CONT -- chmod +x /database/config/db2inst1/DB2_Script_test.sh\",\n        \"kubectl exec -it $DB_CONT -- su - db2inst1 -c \\\"sh /database/config/db2inst1/DB2_Script_test.sh ${var.dbname} ${var.db_user} ${var.db_password} \\\"\",\n      ]\n  connection {\n    host = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n }\n}\n",
+      "templateVariables": {
+        "template_input_params": [
+          {
+            "name": "db_password",
+            "description": "db password",
+            "default": "passw0rd",
+            "type": "password",
+            "required": true,
+            "secured": true,
+            "label": "db_password",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "db_user",
+            "description": "database user",
+            "default": "db2inst1",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "db_user",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "dbname",
+            "description": "database name",
+            "default": "trader",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "dbname",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "host",
+            "description": "IP of host to ssh",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "host",
+            "hidden": false,
+            "immutable": false,
+            "default": ""
+          },
+          {
+            "name": "root_password",
+            "description": "ssh root password",
+            "default": "passw0rd",
+            "type": "password",
+            "required": true,
+            "secured": true,
+            "label": "root_password",
+            "hidden": false,
+            "immutable": false
+          }
+        ],
+        "template_output_params": []
+      }
+    }
+  },
+  "metadata": {
+    "displayName": "DBtestwithinputs",
+    "bullets": []
+  },
+  "created_at": "2018-04-20T11:29:22.353Z",
+  "id": "5ad9cf12d33f2a001e343f78",
+  "tenantId": "aa0ce2e4-bb96-46eb-8429-2930278525f3",
+  "default_template_version": "5ad9cf12d33f2a001e343f79",
+  "template_version": {
+    "id": "5ad9cf12d33f2a001e343f79",
+    "name": "v1.0.0",
+    "enabled": true,
+    "compatible_versions": [
+      "v1.0.0"
+    ]
+  },
+  "template_versions": [
+    {
+      "id": "5ad9cf12d33f2a001e343f79",
+      "name": "v1.0.0",
+      "enabled": true,
+      "compatible_versions": [
+        "v1.0.0"
+      ]
+    }
+  ]
+}

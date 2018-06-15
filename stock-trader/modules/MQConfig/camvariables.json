@@ -1,0 +1,49 @@
+{
+  "template_input_params": [
+    {
+      "name": "host",
+      "description": "Host IP",
+      "default": "",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "host",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "qlocal",
+      "description": "local queue",
+      "default": "NotificationQ",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "qlocal",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "qmgr",
+      "description": "queue manager",
+      "default": "qm1",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "qmgr",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "root_password",
+      "description": "ssh root password",
+      "default": "passw0rd",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "root_password",
+      "hidden": false,
+      "immutable": false
+    }
+  ],
+  "template_output_params": []
+}
