@@ -1,25 +1,25 @@
 {
-  "description": "Configure external DB2",
+  "description": "Db2 configuration on db  deployed on external vm",
   "name": "DB2ConfigExternal",
   "type": "userCreated",
   "manifest": {
     "template_type": "Terraform",
     "template_provider": "Other",
-    "icon": "serviceicon_4.svg",
+    "icon": "serviceicon_1.svg",
     "template": {
-      "templateData": "variable \"host\" {\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  default = \"passw0rd\"\n  description = \"ssh root password\"\n}\nvariable \"db_password\" {\n  default = \"passw0rd\"\n  description = \"db password\"\n}\nvariable \"dbname\" {\n  default = \"trader\"\n  description = \"database name\"\n}\nvariable \"db_user\" {\n  default = \"db2inst1\"\n  description = \"database user\"\n}\nresource \"null_resource\" \"DB_Config1\" {\n  provisioner \"remote-exec\" {\n      inline = [\n         \"chmod +x /tmp/DB2_Sript.sh\",\n         \"su - db2inst1 -c \\\"sh /tmp/DB2_Sript.sh ${var.dbname} ${var.db_user} ${var.db_password}\\\"\",\n      ]\n  connection {\n    host = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n }\n}\n",
+      "templateData": "variable \"host\" {\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  description = \"ssh root password\"\n}\nvariable \"db_password\" {\n  description = \"db password\"\n}\nvariable \"dbname\" {\n  default = \"trader\"\n  description = \"database name\"\n}\nvariable \"db_user\" {\n  default = \"db2inst1\"\n  description = \"database user\"\n}\nresource \"null_resource\" \"DB_Config1\" {\n  provisioner \"remote-exec\" {\n      inline = [\n         \"chmod +x /tmp/DB2_Sript.sh\",\n         \"su - db2inst1 -c \\\"sh /tmp/DB2_Sript.sh ${var.dbname} ${var.db_user} ${var.db_password}\\\"\",\n      ]\n  connection {\n    host = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n }\n}\n",
       "templateVariables": {
         "template_input_params": [
           {
             "name": "db_password",
             "description": "db password",
-            "default": "",
             "type": "password",
             "required": true,
             "secured": true,
             "label": "db_password",
             "hidden": false,
-            "immutable": false
+            "immutable": false,
+            "default": ""
           },
           {
             "name": "db_user",
@@ -56,13 +56,13 @@
           {
             "name": "root_password",
             "description": "ssh root password",
-            "default": "",
             "type": "password",
             "required": true,
             "secured": true,
             "label": "root_password",
             "hidden": false,
-            "immutable": false
+            "immutable": false,
+            "default": ""
           }
         ],
         "template_output_params": []
@@ -73,12 +73,12 @@
     "displayName": "DB2ConfigExternal",
     "bullets": []
   },
-  "created_at": "2018-04-24T11:24:14.688Z",
-  "id": "5adf13ded33f2a001e343f8f",
-  "tenantId": "aa0ce2e4-bb96-46eb-8429-2930278525f3",
-  "default_template_version": "5adf13ded33f2a001e343f90",
+  "created_at": "2018-06-19T06:36:02.543Z",
+  "id": "5b28a45208a4ae001e9c3ba8",
+  "tenantId": "8f5decca-1004-440a-a720-80e20bfa3ef4",
+  "default_template_version": "5b28a45208a4ae001e9c3ba9",
   "template_version": {
-    "id": "5adf13ded33f2a001e343f90",
+    "id": "5b28a45208a4ae001e9c3ba9",
     "name": "v1.0.0",
     "enabled": true,
     "compatible_versions": [
@@ -87,7 +87,7 @@
   },
   "template_versions": [
     {
-      "id": "5adf13ded33f2a001e343f90",
+      "id": "5b28a45208a4ae001e9c3ba9",
       "name": "v1.0.0",
       "enabled": true,
       "compatible_versions": [

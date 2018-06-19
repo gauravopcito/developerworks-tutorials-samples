@@ -12,7 +12,7 @@
     },
     {
       "name": "namespace",
-      "description": "IP of host to ssh",
+      "description": "namespace",
       "default": "default",
       "type": "string",
       "required": true,
@@ -24,10 +24,9 @@
     {
       "name": "root_password",
       "description": "ssh root password",
-      "default": "passw0rd",
-      "type": "password",
+      "type": "string",
       "required": true,
-      "secured": true,
+      "secured": false,
       "label": "root_password",
       "hidden": false,
       "immutable": false

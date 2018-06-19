@@ -3,13 +3,13 @@
     {
       "name": "db_password",
       "description": "db password",
-      "default": "passw0rd",
       "type": "password",
       "required": true,
       "secured": true,
       "label": "db_password",
       "hidden": false,
-      "immutable": false
+      "immutable": false,
+      "default": ""
     },
     {
       "name": "db_user",
@@ -41,19 +41,18 @@
       "secured": false,
       "label": "host",
       "hidden": false,
-      "immutable": false,
-      "default": ""
+      "immutable": false
     },
     {
       "name": "root_password",
       "description": "ssh root password",
-      "default": "passw0rd",
       "type": "password",
       "required": true,
       "secured": true,
       "label": "root_password",
       "hidden": false,
-      "immutable": false
+      "immutable": false,
+      "default": ""
     }
   ],
   "template_output_params": []

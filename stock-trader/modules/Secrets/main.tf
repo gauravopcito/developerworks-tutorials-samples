@@ -1,11 +1,10 @@
-variable "host" {
+ariable "host" {
   description = "IP of host to ssh"
   default =""
 }
 
 variable "root_password" {
   description = "ssh root password"
-  default = "passw0rd"
 
 }
 
@@ -16,7 +15,7 @@ resource "null_resource" "Secrets" {
         "MQ_SVC=$(kubectl get svc |grep mq|grep NodePort|awk '{print $1}')",
         "REDIS_SVC=$(kubectl get svc | grep redis | grep master | awk '{print $1}')",
         "kubectl create secret generic mq --from-literal=id=app --from-literal=pwd= --from-literal=host=$MQ_SVC --from-literal=port=1414 --from-literal=channel=DEV.APP.SVRCONN --from-literal=queue-manager=qm1 --from-literal=queue=NotificationQ",
-        "kubectl create secret generic db2 --from-literal=id=db2inst1 --from-literal=pwd=passw0rd --from-literal=host=$DB_SVC --from-literal=port=50000 --from-literal=db=trader",
+        "kubectl create secret generic db2 --from-literal=id=db2inst1 --from-literal=pwd=<db_user_password> --from-literal=host=$DB_SVC --from-literal=port=50000 --from-literal=db=trader",
         "REDIS_SECRET=$(kubectl get secret | grep redis | grep token | awk '{print $1}')",
         "REDIS_PASSWORD=$(kubectl get secret --namespace default $REDIS_SECRET -o jsonpath=\"{.data.redis-password}\" | base64 --decode)",
         "kubectl create secret generic redis --from-literal=url=redis://x:$REDIS_PASSWORD@$REDIS_SVC:6379 --from-literal=quandl-key=<your_quandl_key>",
@@ -34,4 +33,3 @@ resource "null_resource" "Secrets" {
   }
  }
 }
-

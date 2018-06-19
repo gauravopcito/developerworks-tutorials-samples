@@ -1,13 +1,13 @@
 {
-  "description": "configuration of MQ",
+  "description": "MQ configuration",
   "name": "MQConfig",
   "type": "userCreated",
   "manifest": {
     "template_type": "Terraform",
     "template_provider": "Other",
-    "icon": "serviceicon_3.svg",
+    "icon": "serviceicon_1.svg",
     "template": {
-      "templateData": "variable \"host\" {\n  default = \"\"\n  description = \"Host IP\"\n}\n\nvariable \"root_password\" {\n  description = \"ssh root password\"\n  default = \"passw0rd\"\n\n}\nvariable \"qmgr\"{\n\t default = \"qm1\"\n  \tdescription = \"queue manager\"\n}\nvariable \"qlocal\"{\n\t default = \"NotificationQ\"\n  \tdescription = \"local queue\"\n}\nresource \"null_resource\" \"MQ_Config\" {\n  provisioner \"remote-exec\" {\n      inline = [\n      \t\"MQ_CONT=`kubectl get pods|grep mqtest |awk '{print $1}'`\",\n      \t\"chmod +x /tmp/MQ_Config.txt\",\n\t\t\"kubectl exec -it $MQ_CONT -- runmqsc </tmp/MQ_Config.txt >/tmp/MQ_Config.log\"\n\t\t]\n }\n connection {\n    host = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n}\n",
+      "templateData": "variable \"host\" {\n  default     = \"\"\n  description = \"Host IP\"\n}\n\nvariable \"root_password\" {\n  description = \"ssh root password\"\n}\n\nvariable \"qmgr\" {\n  default     = \"qm1\"\n  description = \"queue manager\"\n}\n\nvariable \"qlocal\" {\n  default     = \"NotificationQ\"\n  description = \"local queue\"\n}\n\nresource \"null_resource\" \"MQ_Config\" {\n  provisioner \"remote-exec\" {\n    inline = [\n      \"MQ_CONT=`kubectl get pods|grep ibm-mq |awk '{print $1}'`\",\n      \"chmod +x /tmp/MQ_Config.txt\",\n      \"kubectl exec -it $MQ_CONT -- runmqsc </tmp/MQ_Config.txt >/tmp/MQ_Config.log\",\n    ]\n  }\n\n  connection {\n    host     = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n}\n",
       "templateVariables": {
         "template_input_params": [
           {
@@ -46,13 +46,13 @@
           {
             "name": "root_password",
             "description": "ssh root password",
-            "default": "passw0rd",
-            "type": "string",
+            "type": "password",
             "required": true,
-            "secured": false,
+            "secured": true,
             "label": "root_password",
             "hidden": false,
-            "immutable": false
+            "immutable": false,
+            "default": ""
           }
         ],
         "template_output_params": []
@@ -63,13 +63,12 @@
     "displayName": "MQConfig",
     "bullets": []
   },
-  "created_at": "2018-04-25T08:10:49.759Z",
-  "id": "5ae0380905a8980021489f3e",
-  "user_name": "admin",
-  "tenantId": "2a144332-7372-4a3e-ad8f-2e5cdecdfcc3",
-  "default_template_version": "5ae0380905a8980021489f3f",
+  "created_at": "2018-06-19T06:39:48.306Z",
+  "id": "5b28a534c7a04a001ed235cd",
+  "tenantId": "8f5decca-1004-440a-a720-80e20bfa3ef4",
+  "default_template_version": "5b28a534c7a04a001ed235ce",
   "template_version": {
-    "id": "5ae0380905a8980021489f3f",
+    "id": "5b28a534c7a04a001ed235ce",
     "name": "v1.0.0",
     "enabled": true,
     "compatible_versions": [
@@ -78,7 +77,7 @@
   },
   "template_versions": [
     {
-      "id": "5ae0380905a8980021489f3f",
+      "id": "5b28a534c7a04a001ed235ce",
       "name": "v1.0.0",
       "enabled": true,
       "compatible_versions": [

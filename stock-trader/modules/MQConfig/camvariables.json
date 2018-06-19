@@ -36,13 +36,13 @@
     {
       "name": "root_password",
       "description": "ssh root password",
-      "default": "passw0rd",
-      "type": "string",
+      "type": "password",
       "required": true,
-      "secured": false,
+      "secured": true,
       "label": "root_password",
       "hidden": false,
-      "immutable": false
+      "immutable": false,
+      "default": ""
     }
   ],
   "template_output_params": []

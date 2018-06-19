@@ -5,7 +5,6 @@ variable "host" {
 
 variable "root_password" {
   description = "ssh root password"
-  default     = "passw0rd"
 }
 
 variable "qmgr" {

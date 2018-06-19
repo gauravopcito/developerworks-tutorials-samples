@@ -1,13 +1,13 @@
 {
-  "description": "Wait for pod to be running",
+  "description": "wait for pods to be in running state",
   "name": "WaitForPod",
   "type": "userCreated",
   "manifest": {
     "template_type": "Terraform",
     "template_provider": "Other",
-    "icon": "serviceicon_6.svg",
+    "icon": "serviceicon_1.svg",
     "template": {
-      "templateData": "variable \"host\" {\n#  default = \"\"\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  default = \"passw0rd\"\n  description = \"ssh root password\"\n}\n\nvariable \"namespace\" {\n  default = \"default\"\n  description = \"IP of host to ssh\"\n}\nresource \"null_resource\" \"WaitingForDb2Pod\" {\n  provisioner \"remote-exec\" {\n      inline = [\n        \"chmod +x /tmp/waitForPod.sh\",\n        \"bash /tmp/waitForPod.sh ${var.namespace}\",\n      ]\n  connection {\n    host = \"${var.host}\"\n    type     = \"ssh\"\n    user     = \"root\"\n    password = \"${var.root_password}\"\n  }\n }\n}",
+      "templateData": "variable \"host\" {\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  description = \"ssh root password\"\n}\n\nvariable \"namespace\" {\n  default     = \"default\"\n  description = \"namespace\"\n}\n\nresource \"null_resource\" \"WaitingForDb2Pod\" {\n  provisioner \"remote-exec\" {\n    inline = [\n      \"chmod +x /tmp/waitForPod.sh\",\n      \"bash /tmp/waitForPod.sh ${var.namespace}\",\n    ]\n\n    connection {\n      host     = \"${var.host}\"\n      type     = \"ssh\"\n      user     = \"root\"\n      password = \"${var.root_password}\"\n    }\n  }\n}",
       "templateVariables": {
         "template_input_params": [
           {
@@ -22,7 +22,7 @@
           },
           {
             "name": "namespace",
-            "description": "IP of host to ssh",
+            "description": "namespace",
             "default": "default",
             "type": "string",
             "required": true,
@@ -34,10 +34,9 @@
           {
             "name": "root_password",
             "description": "ssh root password",
-            "default": "passw0rd",
-            "type": "password",
+            "type": "string",
             "required": true,
-            "secured": true,
+            "secured": false,
             "label": "root_password",
             "hidden": false,
             "immutable": false
@@ -51,12 +50,12 @@
     "displayName": "WaitForPod",
     "bullets": []
   },
-  "created_at": "2018-04-11T11:43:36.774Z",
-  "id": "5acdf4e8d33f2a001e343e8c",
-  "tenantId": "aa0ce2e4-bb96-46eb-8429-2930278525f3",
-  "default_template_version": "5acdf4e8d33f2a001e343e8d",
+  "created_at": "2018-06-19T06:53:48.923Z",
+  "id": "5b28a87c3954fd001eab8607",
+  "tenantId": "8f5decca-1004-440a-a720-80e20bfa3ef4",
+  "default_template_version": "5b28a87c3954fd001eab8608",
   "template_version": {
-    "id": "5acdf4e8d33f2a001e343e8d",
+    "id": "5b28a87c3954fd001eab8608",
     "name": "v1.0.0",
     "enabled": true,
     "compatible_versions": [
@@ -65,7 +64,7 @@
   },
   "template_versions": [
     {
-      "id": "5acdf4e8d33f2a001e343e8d",
+      "id": "5b28a87c3954fd001eab8608",
       "name": "v1.0.0",
       "enabled": true,
       "compatible_versions": [

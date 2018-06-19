@@ -17,16 +17,16 @@ do
         arr=()
 
     #`kubectl get pods -n ${namespace} > status.txt`
-     `kubectl get -n ${namespace} pods > status.txt`
+     `kubectl get -n ${namespace} pods |grep "db2\|mq\|redis" > status.txt`
         while read LINE
         do
                 status=`echo $LINE | awk '{print $3}'`
 
                 #Skip the first iteration
-                if [ "$status" == "STATUS" ]
-                then
-                        continue
-                fi
+                #if [ "$status" == "STATUS" ]
+                #then
+                #       continue
+                #fi
 
                 #Check which services are not in running state
                 if [ "$status" != "Running" ]
@@ -49,8 +49,8 @@ do
         #After each iteration check if all the services are in running state or wait for 60s and try again
         if [ $i -gt 0 ]
         then
-           echo "Wait for 10 Seconds and then check again"
-           sleep 10
+           echo "Wait for 30 Seconds and then check again"
+           sleep 30
         else
              echo "All the services are in running state"
              success="true"

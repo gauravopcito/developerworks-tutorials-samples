@@ -1,14 +1,11 @@
 variable "host" {
-#  default = "9.37.194.157”
   description = "IP of host to ssh"
 }
 
 variable "root_password" {
-  default = "passw0rd"
   description = "ssh root password"
 }
 variable "db_password" {
-  default = "passw0rd"
   description = "db password"
 }
 variable "dbname" {
