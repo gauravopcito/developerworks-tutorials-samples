@@ -264,7 +264,7 @@
               "db_password": "db2inst1",
               "db_user": "db2inst1",
               "dbname": "trader",
-              "host": "192.168.12.31",
+              "host": "192.168.12.33",
               "root_password": "VMware1#vcf"
             },
             "outputs": []
