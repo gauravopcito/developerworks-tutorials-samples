@@ -62,7 +62,12 @@
                   {
                     "case": "production",
                     "sequence": {
+<<<<<<< Upstream, based on be64b53c586a7870caff731671272aba17a82627
                       "0": "db2vmcon245c30b3"
+=======
+                      "0": "ibmdb2en19c7ad6c",
+                      "1": "db2vmcon245c30b3"
+>>>>>>> d8eeba9 Fixed the service.
                     }
                   }
                 ],
@@ -164,6 +169,98 @@
               }
             },
             {
+<<<<<<< Upstream, based on be64b53c586a7870caff731671272aba17a82627
+=======
+              "DB2Config": {
+                "title": "DB2Config",
+                "template_name": "DB2Config",
+                "version": "v1.0.0",
+                "id": "db2confi3d63d08f",
+                "template_type": "Terraform",
+                "template_content_type": "Other",
+                "template_provider": "Other",
+                "instance_name": "dbconfig",
+                "cloud_connection_name": "Other",
+                "template_data_objects": {},
+                "template_params": {
+                  "db_password": "",
+                  "db_user": "db2inst1",
+                  "dbname": "trader",
+                  "host": "",
+                  "root_password": ""
+                },
+                "outputs": []
+              }
+            },
+            {
+              "IBM DB2 Enterprise Server Edition V10.5 on a single virtual machine": {
+                "title": "IBM DB2 Enterprise Server Edition V10.5 on a single virtual machine",
+                "template_name": "IBM DB2 Enterprise Server Edition V10.5 on a single virtual machine - VMware vSphere",
+                "version": "2.0",
+                "id": "ibmdb2en19c7ad6c",
+                "template_type": "Terraform",
+                "template_content_type": "VMware vSphere",
+                "template_provider": "VMware vSphere",
+                "instance_name": "dbconfigexternal",
+                "cloud_connection_name": "Stoddard-VCenter",
+                "template_data_objects": {
+                  "advanced_content_runtime_chef": "camc-vmware-octravis"
+                },
+                "template_params": {
+                  "DB2Node01_db2_das_password": "",
+                  "DB2Node01_db2_das_username": "db2das1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_codeset": "UTF-8",
+                  "DB2Node01_db2_instances_instance1_databases_database1_db_collate": "SYSTEM",
+                  "DB2Node01_db2_instances_instance1_port": "50000",
+                  "DB2Node01_db2_instances_instance1_databases_database1_db_data_path": "/home/db2inst1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_db_name": "db01",
+                  "DB2Node01_db2_instances_instance1_databases_database1_db_path": "/home/db2inst1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_database_users_db_user1_user_gid": "dbgroup1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_database_users_db_user1_user_name": "dbuser1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_database_users_db_user1_user_password": "",
+                  "DB2Node01_db2_instances_instance1_fenced_groupname": "db2fenc1",
+                  "DB2Node01_db2_instances_instance1_fenced_password": "",
+                  "DB2Node01_db2_instances_instance1_fenced_username": "db2fenc1",
+                  "DB2Node01_db2_fp_version": "10.5.0.9",
+                  "DB2Node01_db2_install_dir": "/opt/ibm/db2/V10.5",
+                  "DB2Node01_db2_instances_instance1_instance_dir": "/home/db2inst1",
+                  "DB2Node01_db2_instances_instance1_instance_groupname": "db2iadm1",
+                  "DB2Node01_db2_instances_instance1_instance_password": "",
+                  "DB2Node01_db2_instances_instance1_instance_username": "db2inst1",
+                  "DB2Node01_db2_instances_instance1_databases_database1_pagesize": "4096",
+                  "DB2Node01_db2_instances_instance1_databases_database1_territory": "US",
+                  "DB2Node01_dns_servers": "",
+                  "DB2Node01_dns_suffixes": "",
+                  "DB2Node01_domain": "",
+                  "DB2Node01-image": "",
+                  "DB2Node01-os_admin_user": "",
+                  "DB2Node01-os_password": "",
+                  "DB2Node01_root_disk_size": "100",
+                  "DB2Node01-name": "",
+                  "DB2Node01_root_disk_datastore": "",
+                  "DB2Node01_ipv4_gateway": "",
+                  "DB2Node01_ipv4_address": "",
+                  "DB2Node01_memory": 4096,
+                  "DB2Node01_ipv4_prefix_length": "",
+                  "DB2Node01_number_of_vcpu": 2,
+                  "DB2Node01_network_interface_label": "",
+                  "DB2Node01_cluster": "",
+                  "DB2Node01_datacenter": "",
+                  "DB2Node01_folder": "",
+                  "DB2Node01_adapter_type": "vmxnet3",
+                  "DB2Node01_resource_pool": "",
+                  "user_public_ssh_key": "None"
+                },
+                "outputs": [
+                  "DB2Node01_ip",
+                  "DB2Node01_name",
+                  "DB2Node01_roles",
+                  "stack_id"
+                ]
+              }
+            },
+            {
+>>>>>>> d8eeba9 Fixed the service.
               "DB2ConfigExternal": {
                 "title": "DB2ConfigExternal",
                 "template_name": "DB2ConfigExternal",
