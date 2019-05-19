@@ -62,8 +62,7 @@
                   {
                     "case": "production",
                     "sequence": {
-                      "0": "ibmdb2en19c7ad6c",
-                      "1": "db2vmcon245c30b3"
+                      "0": "db2vmcon245c30b3"
                     }
                   }
                 ],
@@ -159,28 +158,6 @@
                 "template_params": {
                   "host": "",
                   "namespace": "default",
-                  "root_password": ""
-                },
-                "outputs": []
-              }
-            },
-            {
-              "DB2Config": {
-                "title": "DB2Config",
-                "template_name": "DB2Config",
-                "version": "v1.0.0",
-                "id": "db2confi3d63d08f",
-                "template_type": "Terraform",
-                "template_content_type": "Other",
-                "template_provider": "Other",
-                "instance_name": "dbconfig",
-                "cloud_connection_name": "Other",
-                "template_data_objects": {},
-                "template_params": {
-                  "db_password": "",
-                  "db_user": "db2inst1",
-                  "dbname": "trader",
-                  "host": "",
                   "root_password": ""
                 },
                 "outputs": []
